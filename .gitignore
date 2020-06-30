@@ -1,0 +1,6 @@
+.terraform
+.idea
+build
+**/*.tfstate
+**/*.tfstate.backup
+**/*.tfstate.lock.info
