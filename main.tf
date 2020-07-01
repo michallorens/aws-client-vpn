@@ -9,7 +9,7 @@ resource aws_cloudwatch_log_group client-vpn-log-group {
 }
 
 resource aws_cloudwatch_log_stream client-vpn-log-stream {
-  name           = "client-vpn-endpoint-${random_id.default.hex}-${formatdate("DD-MM-YYYY", timestamp())}"
+  name           = "client-vpn-endpoint-${random_id.default.hex}"
   log_group_name = aws_cloudwatch_log_group.client-vpn-log-group.name
 }
 
