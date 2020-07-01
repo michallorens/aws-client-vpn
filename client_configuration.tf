@@ -4,7 +4,7 @@ resource local_file client-configuration {
 client
 dev tun
 proto udp
-remote ${random_id.default.hex}.${aws_ec2_client_vpn_endpoint.client-vpn-endpoint.dns_name} 443
+remote ${random_id.default.hex}${trim(aws_ec2_client_vpn_endpoint.client-vpn-endpoint.dns_name, "*")} 443
 remote-random-hostname
 resolv-retry infinite
 nobind

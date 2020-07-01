@@ -27,7 +27,7 @@ variable private_key_algorithm {
 variable root_certificate_early_renewal {
   type        = number
   description = "Renew root certificate # hours prior to expiration"
-  default     = 8760
+  default     = 0
 }
 
 variable root_certificate_validity {
@@ -46,6 +46,12 @@ variable client_certificate_validity {
   type        = number
   description = "Root certificate validity in hours"
   default     = 12
+}
+
+variable log_retention {
+  type        = number
+  description = "Number of days to retain log events"
+  default     = null
 }
 
 variable tags {
