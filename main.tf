@@ -39,7 +39,7 @@ resource aws_ec2_client_vpn_network_association client-vpn-subnet-assocation {
 
 data aws_region current-region {}
 
-resource "null_resource" "client-vpn-ingress-authorization" {
+resource null_resource client-vpn-ingress-authorization {
   depends_on = [aws_ec2_client_vpn_endpoint.client-vpn-endpoint]
 
   triggers = {
@@ -47,17 +47,31 @@ resource "null_resource" "client-vpn-ingress-authorization" {
     region     = data.aws_region.current-region.name
   }
 
-  provisioner "local-exec" {
+  provisioner local-exec {
     when = create
     command = "aws ec2 authorize-client-vpn-ingress --region ${self.triggers.region} --client-vpn-endpoint-id ${self.triggers.endpoint} --target-network-cidr 0.0.0.0/0 --authorize-all-groups"
   }
 
-  provisioner "local-exec"{
+  provisioner local-exec{
     when = destroy
     command = "aws ec2 revoke-client-vpn-ingress --region ${self.triggers.region} --client-vpn-endpoint-id ${self.triggers.endpoint} --target-network-cidr 0.0.0.0/0 --revoke-all-groups"
   }
 
   lifecycle {
     create_before_destroy = true
+  }
+}
+
+resource null_resource client_vpn_route_internet {
+  for_each = toset(var.subnets)
+
+  triggers = {
+    endpoint   = aws_ec2_client_vpn_endpoint.client-vpn-endpoint.id
+    region     = data.aws_region.current-region.name
+  }
+
+  provisioner local-exec {
+    when    = create
+    command = "aws ec2 create-client-vpn-route --client-vpn-endpoint-id ${self.triggers.endpoint} --destination-cidr-block 0.0.0.0/0 --target-vpc-subnet-id ${each.key} --region ${self.triggers.region}"
   }
 }
