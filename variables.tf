@@ -18,6 +18,12 @@ variable subnets {
   description = "List of subnet IDs to associate with the endpoint"
 }
 
+variable destination_cidr {
+  type        = string
+  description = "Outbound route destination CIDR"
+  default     = "0.0.0.0/0"
+}
+
 variable private_key_algorithm {
   type        = string
   description = "Private key algorithm"
