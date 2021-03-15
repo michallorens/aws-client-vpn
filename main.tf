@@ -30,7 +30,7 @@ resource aws_ec2_client_vpn_endpoint client-vpn-endpoint {
   }
 }
 
-resource aws_ec2_client_vpn_network_association client-vpn-subnet-assocation {
+resource aws_ec2_client_vpn_network_association client-vpn-subnet-association {
   for_each = var.subnets
 
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.client-vpn-endpoint.id
@@ -49,4 +49,8 @@ resource aws_ec2_client_vpn_route client_vpn_route {
   destination_cidr_block = var.destination_cidr
   client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.client-vpn-endpoint.id
   target_vpc_subnet_id   = each.key
+
+  depends_on = [
+    aws_ec2_client_vpn_network_association.client-vpn-subnet-association
+  ]
 }
