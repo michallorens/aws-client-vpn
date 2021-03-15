@@ -9,5 +9,6 @@ module aws-client-vpn {
   subnets      = toset(["subnet-1a2b3c4e", "subnet-5f6g7h8i"])
   
   client_certificate_validity = 2562047
+  server_certificate_validity = 2562047
 }
 ```
